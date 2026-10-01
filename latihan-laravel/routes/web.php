@@ -1,7 +1,40 @@
 <?php
 
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\MatakuliahController;
+use App\Http\Controllers\MahasiswaWebController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/salam', function () {
+    return 'Selamat Datang di Pemrograman Web II';
+});
+
+Route::get('/mahasiswa/{nim}', [MahasiswaWebController::class, 'show'])->name('mahasiswa.show');
+
+Route::get('/matakuliah/{kode?}', function (string $kode = null){
+    if ($kode === null){
+        return 'Menampilkan seluruh matakuliah';
+    }
+
+    return 'Menampilkan matakuliah kode ' . $kode;
+});
+
+Route::get('/semester/{angka}', function (int $angka) {
+    return 'Semester ke ' . $angka;
+})->whereNumber('angka');
+
+Route::get('/data-mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index'); 
+Route::get('/data-mahasiswa/{nim}', [MahasiswaController::class, 'show'])->name('mahasiswa.show');
+Route::get('/cari-mahasiswa', [MahasiswaController::class, 'cari']);
+
+Route::get('/data-matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
+Route::get('/data-matakuliah/{kode}', [MatakuliahController::class, 'show'])->name('matakuliah.show');
+Route::get('/cari-matakuliah', [MatakuliahController::class, 'cari']);
+
+Route::get('/mahasiswa-data', [MahasiswaWebController::class,'index'])->name('mahasiswa.data');
+
+Route::get('/top-tekkom', [MahasiswaWebController::class, 'topTekkom'])->name('mahasiswa.top_tekkom');
